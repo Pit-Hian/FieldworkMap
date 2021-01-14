@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>CodePen - 樣板設計0115</title>
+  
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    /*body for 整體版面控制（英中字型、寬度、無邊界）*/
+    body { 
+      font-family: arial; 
+      font-family: Microsoft JhengHei; 
+      width:100%;
+      margin:0 0 0 0
+    }
+    
+    /*Guide版面設定*/
+    .GuideCover{}
+    
+    /*Side版面設定*/
+    .SidePage{
+      width: 60%;
+      height: 100%;
+      padding:5%;
+      top:0;
+      left:0;
+      position: fixed;      
+      transform: translateX(-100%);
+      transition: 0.5s; /* 轉換時間 */
+      border-right-style: solid;
+      border-right-color: #d1d1d1;
+      border-right-width: 10px;
+      background:#4F4F4F;
+      z-index: 16; /*比側邊方塊還上方的層級*/
+        
+      color: #FFFFFF;
+      font-size: 40px;
+      text-align: center;
+      
+      overflow: auto; /*自動產生滾輪*/
+    }
+    
+    /*側邊的方塊樣式_收合時*/
+    .SideLabel{
+      height:19%;
+      width:1cm;
+      background-color: #d1d1d1;
+      color: #000000;
+      z-index:15;
+        
+      margin: 19px;
+      line-height: 40px;
+      text-align: center;
+      
+      border-radius: 5px 5px 5px 5px;
+      box-shadow: 5px 5px 8px hsla(240, 40%, 15%, .6);
+
+      writing-mode: vertical-lr;
+      letter-spacing:5px; 
+      text-align: center;
+      font-weight:bold;
+      position: absolute;
+      left: -25px;
+      right: -25px;
+      
+      transition:0.5s;
+        }
+    
+    
+        /*側邊的方塊樣式_使用說明打開後→全遮罩與說明*/
+    .SideLabel1{
+      height:100%;
+      width:100%;
+      background-color: #000000;
+      opacity:0.9;
+      color: #FFFFFF;
+      z-index:16;
+        
+      padding:20% 0 0 0;
+      text-align: center;
+
+      letter-spacing:5px; 
+      text-align: center;
+      font-weight:bold;
+      font-size: 32px;
+      left: 0%;
+      right:0%;
+      position: fixed;
+      
+      transition:0.5s;
+        }
+    
+    
+    /*側邊的方塊樣式_打開後→右半遮罩*/
+    .SideLabel2{
+      height:100%;
+      width:30%;
+      padding:0 0 0 25%;
+      background-color: #000000;
+      opacity:0.9;
+      color: #FFFFFF;
+      z-index:15;
+        
+      line-height: 40px;
+      text-align: center;
+
+      writing-mode: vertical-lr;
+      letter-spacing:5px; 
+      text-align: center;
+      font-weight:bold;
+      left: 60%;
+      position: fixed;
+      
+      transition:0.5s;
+        }
+    
+    /*NAV（大概只有側邊會用）*/
+      nav ah{
+        display:block;
+        padding:15px;
+        color:#FFFFFF;
+        background-color:#3C3C3C;
+        font-weight:bold;
+        font-size:32px;
+        letter-spacing: 1px;
+        text-align: center;
+        vertical-align:bottom;
+      }
+      nav a{
+        display:block;
+        padding:10px;
+        color:#FFFFFF;
+        font-weight:bold;
+        font-size:18px;
+        text-align: left;
+        letter-spacing: 1px;
+      }
+      nav ol{
+        display:block;
+        padding:0 0 0 35px;
+        color:#FFFFFF;
+        font-weight:bold;
+        font-size:18px;
+        text-align: left;
+        letter-spacing: 1px;
+      }
+    
+  </style>
+</head>
+  
+  
+<body>
+  
+  <!--1.歡迎畫面 CODESTART-->  <!--1.歡迎畫面 CODEEND-->
+  
+  <!--2.側邊的方塊 made by Div & CheckBox CODESTART-->
+  <input type="checkbox" name="" id="checkbox1" onclick="myFctSideBlock1()" style="position:fixed;top:-100px">                                                            <!--position:fixed;top:-100px 讓Box置於窗外-->
+  <label class="SideLabel" id="SideLabel1" for="checkbox1" style="top:30%">
+    <ln id="labelname11" style="display:initial">使用說明&#128076</ln>
+    <ln id="labelname12" style="display:none">按任意處回到地圖&#128072</ln>
+  </label>
+  <input type="checkbox" name="" id="checkbox2" onclick="myFctSideBlock2()" style="position:fixed;top:-100px">
+  <label class="SideLabel" id="SideLabel2" for="checkbox2" style="top:50%">
+    <ln id="labelname21" style="display:initial">興趣點位&#128076</ln>
+    <ln id="labelname22" style="display:none">按此回到地圖&#128072</ln>
+  </label>
+  <input type="checkbox" name="" id="checkbox3" onclick="myFctSideBlock3()" style="position:fixed;top:-100px">
+  <label class="SideLabel" id="SideLabel3"  for="checkbox3" style="top:70%">
+    <ln id="labelname31" style="display:initial">關於網頁&#128076</ln>
+    <ln id="labelname32" style="display:none">按此回到地圖&#128072</ln>
+  </label>
+  <!--側邊的方塊文字變化-->
+  <!--迴圈測試失敗，故用比較笨的方法-->
+  <script>
+    function myFctSideBlock1() {
+      var checkBox = document.getElementById("checkbox1");
+      var text1 = document.getElementById("labelname11");
+      var text2 = document.getElementById("labelname12");
+      var Block = document.getElementById("SideLabel1");
+      var Guide = document.getElementById("Guide");
+      if (checkBox.checked == true){
+        text1.style.display = "none";
+        text2.style.display = "initial";
+        Block.className="SideLabel1";
+        Block.style.top="0%";
+        Guide.style.display=""
+      } else {
+        text1.style.display = "initial";
+        text2.style.display = "none";
+        Block.className="SideLabel";
+        Block.style.top="30%";
+      }
+    }
+    function myFctSideBlock2() {
+      var checkBox = document.getElementById("checkbox2");
+      var text1 = document.getElementById("labelname21");
+      var text2 = document.getElementById("labelname22");
+      var Block = document.getElementById("SideLabel2");
+      var POI = document.getElementById("POI");
+      if (checkBox.checked == true){
+        text1.style.display = "none";
+        text2.style.display = "initial";
+        Block.className="SideLabel2";
+        Block.style.top="0%";
+        POI.style.transform="translateX(0%)"
+      } else {
+        text1.style.display = "initial";
+        text2.style.display = "none";
+        Block.className="SideLabel";
+        Block.style.top="50%";
+        POI.style.transform="translateX(-100%)"
+      }
+    }
+    function myFctSideBlock3() {
+      var checkBox = document.getElementById("checkbox3");
+      var text1 = document.getElementById("labelname31");
+      var text2 = document.getElementById("labelname32");
+      var Block = document.getElementById("SideLabel3");
+      var Resource = document.getElementById("Resource");
+       if (checkBox.checked == true){
+        text1.style.display = "none";
+        text2.style.display = "initial";
+        Block.className="SideLabel2";
+        Block.style.top="0%";
+        Resource.style.transform="translateX(0%)"
+      } else {
+        text1.style.display = "initial";
+        text2.style.display = "none";
+        Block.className="SideLabel";
+        Block.style.top="70%";
+        Resource.style.transform="translateX(-100%)"
+      }
+    }
+  </script>
+  
+  <!--2.2.使用說明 made by CheckBox CODESTART-->
+  <div class="GuideCover" id="Guide"></div>
+  <!--2.1.使用說明 made by CheckBox CODEEND-->
+  
+  <!--2.2.點位紀錄 made by CheckBox CODESTART-->
+  <div class="SidePage" id="POI"></div>
+  <!--2.2.點位紀錄 made by CheckBox CODEEND-->
+  
+  <!--2.3.關於網頁 CODESTART-->
+  <div class="SidePage" id="Resource">
+    <nav>
+      <ah>製作目的與聲明</ah>
+      <a>本網頁是「師大109-1學期地理視覺化」的課堂期末作業，旨在製作網路版考察筆記本，作為人文相關考察的網路資料參考使用，故使用Leaflet介接土地使用分區之圖磚服務作為固定的底圖、並介接三幅古地圖作為圖層，方便於以過去的地圖及地理觀點切入現在的脈絡之中。</a>
+      <a>考量考察不會代電腦，故版面之長度數據採用百分比，以達到網頁自適應之效果，讓手機</a>
+      <a>另外，基於網路共享原則、資料也參考他人程式碼架構，絕不做任何營利使用。</a>
+      <ah>未來展望</ah>
+      <ol>
+        <li>本程式碼有太多的重複，每增加一個圖層就要打入雷同的程式碼，待練好JS迴圈之後，可再追加更多自然的圖層。</li>
+        <li>目前正在研究如何轉至GitHub。</li>
+        <li>興趣點製作中。</li>
+      </ol>
+      <ah>參考資料</ah>
+      <a href="https://www.w3schools.com">w3schools</a>
+      <a href="https://leafletjs.com">Leafletjs</a>
+      <a href="javascript:alert('連結遭擋、故在此提供影片網址→ https://youtu.be/-KPbFhZmBPE')">SideMenu by CSSCoke</a>
+    </nav>
+  </div>
+  <!--2.3.關於網頁 CODEEND-->
+  
+  <!--2.側邊的方塊 made by Div & CheckBox CODEEND-->
+  
+  <!--3.地圖專用的Div & 地圖Code CODESTART-->
+  <div id="map1" style="width: 100%; height: 100%; position:fixed; padding:0; z-index: 1"></div>
+  
+  <!-- MetaData of Map -->
+  <meta name="description" content="Leaflet- wmts 國土測繪中心 與 百年歷史地圖">
+	
+	<title>Leaflet wmts- 國土測繪中心 與 百年歷史地圖</title>
+
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- Leaflet icon -->
+	<link rel="shortcut icon" type="image/x-icon" href="https://leafletjs.com/docs/images/favicon.ico" >
+    <!-- Include Leaflet CSS file -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css">
+    <!-- Include Leaflet JavaScript file after Leaflet's CSS -->
+    <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
+
+  <script>
+        //initialize with [lat,long],zoom
+	      var mymap = L.map('map1').setView([23.710439, 120.435087], 14);
+        nlscMap = L.tileLayer('https://wmts.nlsc.gov.tw/wmts/{id}/default/GoogleMapsCompatible/{z}/{y}/{x}.jpg', {
+		maxZoom: 19,
+		attribution: 'Map data &copy; <a href="https://maps.nlsc.gov.tw/">國土測繪中心</a>',
+        id: 'LUIMAP' //https://maps.nlsc.gov.tw/S09SOA/ EMAP:通用版電子地圖 EMAP2:通用版透明 PHOTO2:正射影像
+	}).addTo(mymap);
+  
+        twHistMap1 = L.tileLayer('http://gis.sinica.edu.tw/tileserver/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER={Layer_ID}&STYLE=_null&TILEMATRIXSET= GoogleMapsCompatible &TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&FORMAT=image/jpeg', {
+		maxZoom: 15,
+		attribution: 'Map data &copy; <a href="https://maps.nlsc.gov.tw/">國土測繪中心</a>',
+    opacity: 0,
+    Layer_ID: 'TM25K_1989' //https://gis.sinica.edu.tw/tileserver/
+	}).addTo(mymap);
+        
+        twHistMap2 = L.tileLayer('http://gis.sinica.edu.tw/tileserver/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER={Layer_ID}&STYLE=_null&TILEMATRIXSET= GoogleMapsCompatible &TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&FORMAT=image/jpeg', {
+		maxZoom: 15,
+		opacity: 0,
+    attribution: 'Map data &copy; <a href="https://maps.nlsc.gov.tw/">國土測繪中心</a>',
+    Layer_ID: 'JM20K_1921' //https://gis.sinica.edu.tw/tileserver/
+	}).addTo(mymap);
+        
+        twHistMap3 = L.tileLayer('http://gis.sinica.edu.tw/tileserver/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER={Layer_ID}&STYLE=_null&TILEMATRIXSET= GoogleMapsCompatible &TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&FORMAT=image/jpeg', {
+		maxZoom: 15,
+    opacity: 0,
+		attribution: 'Map data &copy; <a href="https://maps.nlsc.gov.tw/">國土測繪中心</a>',
+    Layer_ID: 'JM20K_1904' //https://gis.sinica.edu.tw/tileserver/
+	}).addTo(mymap);
+    
+    L.control.mousePosition().addTo(map);
+
+ </script>
+  
+        <div id="HMapListAndCheck">
+          
+          <!-- Map右上的漢堡選單 -->
+          <div id="HMapList" style="width:200px; 
+                                  height:250px;
+                                  position: absolute;
+                                  right: 60px;
+                                  top: 20px;
+                                  z-index: 10;
+                                  background: white;
+                                  display: none;
+                                  border-radius: 5px 5px 5px 5px;
+                                  box-shadow: 5px 0 5px hsla(240, 40%, 15%, .6);">
+            <p style="font-weight: bold; font-size:12px; text-align:center">圖層顯示與透明度調整</p>
+            <table style="width:200px; font-size:10px; border-collapse: collapse;">
+              <style>
+                th, td {height:24px}
+                tr:nth-child(1) {background-color: #f2f2f2;height:28px}
+                tr:nth-child(4n) {background-color: #f2f2f2;}
+                tr:nth-child(4n+1) {background-color: #f2f2f2;}
+              </style>
+              <tr>
+                <th style="width:40px">顯示</th>
+                <th style="width:140px">透明度</th> 
+              </tr>
+              <tr>    
+                <td colspan="2">1989-經建1版地形圖-1:25,000</td>
+              </tr>              
+              <tr>    
+                <td><input type="checkbox" id="SHOW_tHP1" onchange="myFctHMC()"></td>
+                <td><input id="Slide_tHP1" type="range" min="0" max="1" step="0.1" value="1" z-index="52" onchange="updateOpacity1(this.value)" disabled="disabled">
+</td>
+              </tr>
+              <tr>    
+                <td colspan="2">1921-日治臺灣堡圖(大正)-1:20,000</td>
+              </tr>              
+              <tr>    
+                <td><input type="checkbox" id="SHOW_tHP2" onchange="myFctHMC()"></td>
+                <td>  <input id="Slide_tHP2" type="range" min="0" max="1" step="0.1" value="1" z-index="52" onchange="updateOpacity2(this.value)" disabled="disabled">
+</td>
+              </tr>
+                            <tr>    
+                <td colspan="2">1904-日治臺灣堡圖(明治)-1:20,000</td>
+              </tr>             
+              <tr>    
+                <td><input type="checkbox" id="SHOW_tHP3" onchange="myFctHMC()"></td>
+                <td>  <input id="Slide_tHP3" type="range" min="0" max="1" step="0.1" value="1" z-index="52" onchange="updateOpacity3(this.value)" disabled>
+</td>
+              </tr>
+</table>
+            <script>
+              //地圖顯示
+              function myFctHMC() {
+                var checkBox1 = document.getElementById("SHOW_tHP1");
+                var checkBox2 = document.getElementById("SHOW_tHP2");
+                var checkBox3 = document.getElementById("SHOW_tHP3");
+                if (checkBox1.checked == true){
+                  twHistMap1.setOpacity(1);
+                  Slide_tHP1.disabled=false
+                } else {
+                  twHistMap1.setOpacity(0);
+                  Slide_tHP1.disabled=true
+                }
+                if (checkBox2.checked == true){
+                  twHistMap2.setOpacity(1);
+                  Slide_tHP2.disabled=false
+                } else {
+                  twHistMap2.setOpacity(0);
+                  Slide_tHP2.disabled=true
+                }
+                if (checkBox3.checked == true){
+                  twHistMap3.setOpacity(1);
+                  Slide_tHP3.disabled=false
+                } else {
+                  twHistMap3.setOpacity(0);
+                  Slide_tHP3.disabled=true
+                }
+            }
+              //地圖透明度
+              function updateOpacity1(value) {twHistMap1.setOpacity(value)}
+              function updateOpacity2(value) {twHistMap2.setOpacity(value)}
+              function updateOpacity3(value) {twHistMap3.setOpacity(value)}
+            </script>
+            
+                      
+          </div>
+        
+        
+          <!-- HMap選單CHECKBOX -->  
+          <input type="checkbox" 
+                 name="" 
+                 id="HMapChoose" 
+                 onclick="myFctHMap()"
+                 transition: "0.8s"
+                 style="z-index: 12; 
+                        position: absolute; 
+                        right: 17px; 
+                        top: 17px; 
+                        width: 40px; 
+                        height: 40px; 
+                        opacity:0">
+          <label for="HMapChoose" style="position: absolute;
+                                         right: 20px;
+                                         top: 20px;
+                                         width: 40px; 
+                                         height: 40px;
+                                         z-index: 12; 
+                                         margin: auto;
+                                         background: white;
+                                         border-radius: 5px 5px 5px 5px;
+                                         box-shadow: 5px 0 5px hsla(240, 40%, 15%, .6);
+          "><ln style="font-size: 30px;
+          padding: 5px;
+          ">&#9776</ln></label>
+          
+          <script>
+            //調整地圖選單的開啟
+            function myFctHMap() {
+              var checkBox = document.getElementById("HMapChoose");
+              var text = document.getElementById("HMapList");
+              if (checkBox.checked == true){
+                text.style.display = "block";
+              } else {
+                text.style.display = "none";
+              }
+            }
+           </script>
+  <!--3.地圖專用的Div & 地圖Code CODEEND-->          
+</body>
+</html>
+<!-- partial -->
+  
+</body>
+</html>
